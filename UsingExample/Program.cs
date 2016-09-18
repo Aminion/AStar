@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Drawing;
+using MazeGenerator;
+using AStar;
 
 namespace UsingExample
 {
@@ -7,30 +9,27 @@ namespace UsingExample
     {
         static void Main(string[] args)
         {
-            var printmap = new char[5, 5];
-            bool[,] map = {
-             { true, true, false, true, true},
-             { true, true, false, false, true},
-             { true, true, false, true, true},
-             { true, true, false, true, false},
-             { true, true, true, true, true}
-            };
-            var path = AStar.AStar.Search(new Point(2, 0), new Point(0, 3), map);
-            for (var i = 0; i < 5; i++)
+            var size = new Size(93, 227);
+            var printmap = new char[size.Width, size.Height];
+            bool[,] map = MazeGenerator.MazeGenerator.Generate(size, new Point(1, 1));
+            var path = AStar.AStar.Search(new Point(1, 1), new Point(91, 225), map);
+
+            for (var i = 0; i < map.GetLength(0); i++)
             {
-                for (var j = 0; j < 5; j++)
+                for (var j = 0; j < map.GetLength(1); j++)
                 {
-                    printmap[i, j] = map[i, j] ? '_' : '#';
+                    printmap[i, j] = map[i, j] ? ' ' : '#';
                 }
             }
             foreach (var p in path)
             {
-                printmap[p.X, p.Y] = '*';
+                printmap[p.X, p.Y] = '.';
             }
-            for (var i = 0; i < 5; i++)
+            for (var i = 0; i < map.GetLength(0); i++)
             {
-                for (var j = 0; j < 5; j++)
+                for (var j = 0; j < map.GetLength(1); j++)
                 {
+
                     Console.Write(printmap[i, j]);
                 }
                 Console.Write(Environment.NewLine);

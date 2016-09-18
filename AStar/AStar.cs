@@ -5,7 +5,6 @@ using System.Linq;
 
 namespace AStar
 {
-
     public static class AStar
     {
         private class Node : IComparable<Node>
@@ -50,23 +49,22 @@ namespace AStar
             {
                 if (p.X < 0 || p.X >= mapSize.Width || p.Y < 0 || p.Y >= mapSize.Height || !obstaclesMap[p.X, p.Y])
                     continue;
-                ret.Add(p);
+                yield return p;
             }
-            return ret;
         }
 
         private static int NeighborOffset(Point current, Point neighbor)
             => current.X == neighbor.X || current.Y == neighbor.Y ? 10 : 14;
 
         private static float H(Point from, Point to)
-            => (float) Math.Sqrt(Math.Pow(to.X - from.X, 2) + Math.Pow(to.Y - from.Y, 2));
+            => (float)Math.Sqrt(Math.Pow(to.X - from.X, 2) + Math.Pow(to.Y - from.Y, 2));
 
         public static List<Point> Search(Point start, Point end, bool[,] map)
         {
             var mapSize = new Size(map.GetLength(0), map.GetLength(1));
             var startNode = new Node(null, start, H(start, end), 0);
-            var open = new List<Node>() {startNode};
-            var nodes = new Dictionary<Point, Node> {{startNode.Position, startNode}};
+            var open = new List<Node>() { startNode };
+            var nodes = new Dictionary<Point, Node> { { startNode.Position, startNode } };
             while (open.Any())
             {
                 open.Sort();
