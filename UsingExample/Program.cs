@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
-using MazeGenerator;
-using AStar;
+using System.Text;
 
 namespace UsingExample
 {
@@ -27,12 +26,13 @@ namespace UsingExample
             }
             for (var i = 0; i < map.GetLength(0); i++)
             {
+                var builder = new StringBuilder();
                 for (var j = 0; j < map.GetLength(1); j++)
                 {
-
-                    Console.Write(printmap[i, j]);
+                    builder.Append(printmap[i, j]);
                 }
-                Console.Write(Environment.NewLine);
+                builder.Append(Environment.NewLine);
+                Console.Write(builder.ToString());
             }
             Console.ReadKey();
         }
