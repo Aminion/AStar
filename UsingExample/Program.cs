@@ -8,10 +8,10 @@ namespace UsingExample
     {
         static void Main(string[] args)
         {
-            var size = new Size(93, 227);
+            var size = new Size(27, 111);
             var printmap = new char[size.Width, size.Height];
             bool[,] map = MazeGenerator.MazeGenerator.Generate(size, new Point(1, 1));
-            var path = AStar.AStar.Search(new Point(1, 1), new Point(91, 225), map);
+            var path = AStar.AStar.Search(new Point(1, 1), new Point(size.Width - 2, size.Height-2), map);
 
             for (var i = 0; i < map.GetLength(0); i++)
             {
