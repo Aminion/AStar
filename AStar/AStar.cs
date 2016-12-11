@@ -43,28 +43,24 @@ namespace AStar
         }
 
         private static IEnumerable<Point> PassableNeighborsOf(Point current, bool[,] obstaclesMap, Size mapSize)
-        {
-            var ret = new List<Point>();
-            foreach (var p in SupposedNeighborsOf(current))
-            {
-                if (p.X < 0 || p.X >= mapSize.Width || p.Y < 0 || p.Y >= mapSize.Height || !obstaclesMap[p.X, p.Y])
-                    continue;
-                yield return p;
-            }
-        }
+            =>
+            SupposedNeighborsOf(current)
+                .Where(
+                    p => p.X >= 0 && p.X < mapSize.Width && p.Y >= 0 && p.Y < mapSize.Height && obstaclesMap[p.X, p.Y]);
+
 
         private static int NeighborOffset(Point current, Point neighbor)
             => current.X == neighbor.X || current.Y == neighbor.Y ? 10 : 14;
 
         private static float H(Point from, Point to)
-            => (float)Math.Sqrt(Math.Pow(to.X - from.X, 2) + Math.Pow(to.Y - from.Y, 2));
+            => (float) Math.Sqrt(Math.Pow(to.X - from.X, 2) + Math.Pow(to.Y - from.Y, 2));
 
         public static List<Point> Search(Point start, Point end, bool[,] map)
         {
             var mapSize = new Size(map.GetLength(0), map.GetLength(1));
             var startNode = new Node(null, start, H(start, end), 0);
-            var open = new List<Node>() { startNode };
-            var nodes = new Dictionary<Point, Node> { { startNode.Position, startNode } };
+            var open = new List<Node>() {startNode};
+            var nodes = new Dictionary<Point, Node> {{startNode.Position, startNode}};
             while (open.Any())
             {
                 open.Sort();

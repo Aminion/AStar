@@ -21,7 +21,6 @@ namespace MazeGenerator
                 if (randNeighbor == default(Point))
                 {
                     current = searchStack.Pop();
-                    continue;
                 }
                 else
                 {
@@ -29,7 +28,6 @@ namespace MazeGenerator
                     maze[b.X, b.Y] = true;
                     searchStack.Push(current);
                     current = randNeighbor;
-                    continue;
                 }
             } while (searchStack.Any());
             return maze;
@@ -49,22 +47,17 @@ namespace MazeGenerator
         }
         private static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source, Random rng)
         {
-            T[] elements = source.ToArray();
-            for (int i = elements.Length - 1; i >= 0; i--)
+            var elements = source.ToArray();
+            for (var i = elements.Length - 1; i >= 0; i--)
             {
-                int swapIndex = rng.Next(i + 1);
+                var swapIndex = rng.Next(i + 1);
                 yield return elements[swapIndex];
                 elements[swapIndex] = elements[i];
             }
         }
         private static IEnumerable<Point> NeighborsOf(Point current, Size mapSize)
         {
-            foreach (var p in SupposedNeighborsOf(current))
-            {
-                if (p.X < 0 || p.X >= mapSize.Width || p.Y < 0 || p.Y >= mapSize.Height)
-                    continue;
-                yield return p;
-            }
+            return SupposedNeighborsOf(current).Where(p => p.X >= 0 && p.X < mapSize.Width && p.Y >= 0 && p.Y < mapSize.Height);
         }
         private static IEnumerable<Point> SupposedNeighborsOf(Point point)
         {
